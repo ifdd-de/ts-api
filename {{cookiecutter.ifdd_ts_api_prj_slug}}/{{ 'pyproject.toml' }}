@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.ifdd_ts_api_prj_slug }}"
+version = "{{ cookiecutter.ifdd_ts_api_version }}"
+description = "{{ cookiecutter.ifdd_ts_api_prj_name }}"
+requires-python = ">=3.13"
+
+dependencies = [
+    "ifdd-ts-core~={{ cookiecutter.ifdd_ts_core_version }}",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ifdd-ts-core[dev]~={{ cookiecutter.ifdd_ts_core_version }}",
+    "pyyaml",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.cruft]
+skip = [
+    ".env",
+    "certs",
+    "app/settings.py",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

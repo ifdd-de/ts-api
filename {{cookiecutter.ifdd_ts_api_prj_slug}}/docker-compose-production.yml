@@ -1,0 +1,43 @@
+# Production: the API behind the IFDD proxy, on the host of Grafana below the
+# path {{ cookiecutter.ifdd_ts_api_path }}. It reaches VictoriaMetrics on the
+# ingest network and Keycloak and the type service through the proxy network.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: "{{ cookiecutter.ifdd_registry_url }}/{{ cookiecutter.ifdd_ts_api_prj_slug }}:{{ cookiecutter.ifdd_ts_api_version }}"
+    env_file:
+      - .env
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - "no-new-privileges:true"
+    networks:
+      - ext-proxy-net
+      - ingest
+    labels:
+      - "traefik.enable=true"
+      # Longer than the rule of Grafana (Host only), so Traefik's default
+      # priority sends {{ cookiecutter.ifdd_ts_api_path }} here and the rest of the host to Grafana.
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ts_api_prj_slug }}.rule=Host(`{{ cookiecutter.ifdd_ts_host }}`) && PathPrefix(`{{ cookiecutter.ifdd_ts_api_path }}`)"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ts_api_prj_slug }}.service={{ cookiecutter.ifdd_ts_api_prj_slug }}"
+      # Security headers from the proxy (headers.yml there); csp-api-docs
+      # because the API serves Swagger UI and ReDoc. Grafana's router on the
+      # same host keeps its own setting.
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ts_api_prj_slug }}.middlewares=security-headers@file,csp-api-docs@file"
+      - "traefik.http.services.{{ cookiecutter.ifdd_ts_api_prj_slug }}.loadbalancer.server.port={{ cookiecutter.ifdd_ts_api_port }}"
+      - "traefik.docker.network={{ cookiecutter.ifdd_proxy_network }}"
+    restart: unless-stopped
+
+networks:
+  ext-proxy-net:
+    name: {{ cookiecutter.ifdd_proxy_network }}
+    external: true
+  # Created by the ifdd-ts instance (or by hand); VictoriaMetrics listens there.
+  ingest:
+    name: {{ cookiecutter.ifdd_ts_ingest_network }}
+    external: true

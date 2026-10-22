@@ -1,0 +1,26 @@
+# Dependabot version updates for the ts-api template.
+# Security updates are a repository setting and do not depend on this file.
+#
+# Not covered on purpose:
+# - versions in cookiecutter.json;
+# - tests/docs/requirements.txt (pinned together for the docs check);
+# - {{cookiecutter.ifdd_ts_api_prj_slug}}/pyproject.toml: its ts-core requirement is a template expression.
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: "docker"
+    directories:
+      - "/*cookiecutter.ifdd_ts_api_prj_slug*"
+    schedule:
+      interval: "monthly"
+    groups:
+      minor-and-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]

@@ -1,0 +1,17 @@
+# Local configuration, created from dotenv.dist
+.env
+
+# CA certificates of this instance (see certs/README.md). Only the README is
+# versioned.
+certs/*
+!certs/README.md
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+.venv/
+
+# Local builds of the documentation (docs/en, docs/de)
+docs/_build/

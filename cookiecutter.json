@@ -1,0 +1,26 @@
+{
+    "ifdd_ts_api_prj_name": "IFDD TS API",
+    "ifdd_ts_api_prj_slug": "{{ cookiecutter.ifdd_ts_api_prj_name | lower | replace(' ', '-') }}",
+    "ifdd_ts_api_version": "26.10.2",
+    "ifdd_ts_core_version": "26.10.2",
+    "ifdd_ts_api_path": "/tsapi",
+    "ifdd_ts_api_url": "https://ts.example.org/tsapi",
+    "ifdd_ts_api_port": "8093",
+    "ifdd_ts_api_max_workers": "2",
+    "ifdd_ts_api_log_level": "info",
+    "ifdd_ts_api_max_items": "10000",
+    "ifdd_ts_api_vm_url": "http://victoriametrics:8428",
+    "ifdd_ts_api_oidc_client_id": "ifdd-ts-api",
+    "ifdd_ts_api_role_read": "ifdd_ts_ro",
+    "ifdd_ts_api_role_write": "ifdd_ts_rw",
+    "ifdd_ts_host": "ts.example.org",
+    "ifdd_ts_ingest_network": "ts-ingest",
+    "ifdd_proxy_network": "proxy-net",
+    "ifdd_oidc_realm": "https://id.example.org/realms/ifdd",
+    "ifdd_type_url": "https://type.example.org/v1",
+    "ifdd_context_root": "ifdd.de",
+    "ifdd_registry_url": "ghcr.io/ifdd-de",
+    "_copy_without_render": [
+        ".github"
+    ]
+}

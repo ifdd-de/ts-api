@@ -1,0 +1,20 @@
+# Values that differ from the defaults: another path with two segments,
+# other port, roles, client, networks and a realm with a path below the host.
+default_context:
+  ifdd_ts_api_prj_name: "Grid TS API"
+  ifdd_ts_api_path: "/series/api"
+  ifdd_ts_api_url: "https://ts.grid.example.org/series/api"
+  ifdd_ts_api_port: "18093"
+  ifdd_ts_api_max_workers: "4"
+  ifdd_ts_api_log_level: "debug"
+  ifdd_ts_api_max_items: "500"
+  ifdd_ts_api_vm_url: "http://vm.grid:8428"
+  ifdd_ts_api_oidc_client_id: "grid-ts-api"
+  ifdd_ts_api_role_read: "ts-read"
+  ifdd_ts_api_role_write: "ts-write"
+  ifdd_ts_host: "ts.grid.example.org"
+  ifdd_ts_ingest_network: "grid-ingest"
+  ifdd_proxy_network: "edge-net"
+  ifdd_oidc_realm: "https://login.example.org/auth/realms/grid"
+  ifdd_type_url: "https://type.grid.example.org/v2"
+  ifdd_context_root: "grid.example.org"

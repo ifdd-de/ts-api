@@ -1,0 +1,36 @@
+# Configuration of the time series API (read by ifdd-ts-core through
+# pydantic-settings, passed to the container with env_file). No secrets: the
+# API only checks tokens. Values with spaces are in single quotes, so that a
+# shell can source this file too.
+
+API_TITLE='{{ cookiecutter.ifdd_ts_api_prj_name }}'
+LOG_LEVEL={{ cookiecutter.ifdd_ts_api_log_level.upper() }}
+# uvicorn processes (start.sh)
+WORKERS={{ cookiecutter.ifdd_ts_api_max_workers }}
+# Internal port of uvicorn (not published in production).
+PORT={{ cookiecutter.ifdd_ts_api_port }}
+
+IFDD_TS_API_VERSION={{ cookiecutter.ifdd_ts_api_version }}
+# Path prefix of every endpoint; the proxy routes it on the host of Grafana.
+IFDD_TS_API_PATH={{ cookiecutter.ifdd_ts_api_path }}
+# Public URL, for people and scripts; not read by ifdd-ts-core.
+IFDD_TS_API_URL={{ cookiecutter.ifdd_ts_api_url }}
+
+# Tokens of the realm: client credentials of services. The roles below are
+# client roles of IFDD_OIDC_JWKS_AUDIENCE; roles with a dot are store patterns.
+IFDD_TS_API_AUTH_ENABLED=true
+IFDD_OIDC_ISSUER={{ cookiecutter.ifdd_oidc_realm }}
+IFDD_OIDC_JWKS_URL={{ cookiecutter.ifdd_oidc_realm }}/protocol/openid-connect/certs
+IFDD_OIDC_TOKEN_URL={{ cookiecutter.ifdd_oidc_realm }}/protocol/openid-connect/token
+IFDD_OIDC_JWKS_AUDIENCE={{ cookiecutter.ifdd_ts_api_oidc_client_id }}
+IFDD_TS_ROLE_READ={{ cookiecutter.ifdd_ts_api_role_read }}
+IFDD_TS_ROLE_WRITE={{ cookiecutter.ifdd_ts_api_role_write }}
+# Store pattern of the development user (IFDD_TS_API_AUTH_ENABLED=false).
+IFDD_CONTEXT_ROOT={{ cookiecutter.ifdd_context_root }}
+
+# VictoriaMetrics on the ingest network, and the type service whose
+# vocabularies define the properties of the samples.
+IFDD_TS_VM_URL={{ cookiecutter.ifdd_ts_api_vm_url }}
+IFDD_TYPE_URL={{ cookiecutter.ifdd_type_url }}
+# Most samples written or read, and most series listed, per request.
+IFDD_TS_MAX_ITEMS={{ cookiecutter.ifdd_ts_api_max_items }}

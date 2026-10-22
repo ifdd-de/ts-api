@@ -1,0 +1,106 @@
+name: Template
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Render and test (${{ matrix.fixture }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture: [defaults, custom]
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: template
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install tooling
+        run: pip install cruft cookiecutter pyyaml
+
+      # ts-core is not on PyPI yet, so it is installed from its repository.
+      # Pin this to a release once the package is published.
+      - name: Check out ts-core
+        uses: actions/checkout@v7
+        with:
+          repository: ifdd-de/ts-core
+          path: ts-core
+
+      - name: Render
+        run: |
+          cookiecutter --no-input --config-file template/tests/fixtures/${{ matrix.fixture }}.yaml \
+            --output-dir rendered template
+          INSTANCE=$(find rendered -mindepth 1 -maxdepth 1 -type d | head -1)
+          echo "INSTANCE=$INSTANCE" >> "$GITHUB_ENV"
+
+      - name: The rendered instance must contain no template placeholders
+        run: |
+          if grep -rl "cookiecutter\." "$INSTANCE"; then
+            echo "Unrendered placeholders found" >&2
+            exit 1
+          fi
+
+      - name: .env is private and a shell can source it
+        working-directory: ${{ env.INSTANCE }}
+        run: |
+          test "$(stat -c %a .env)" = 600
+          set -a; . ./.env; set +a
+          test -n "$IFDD_TS_API_PATH"
+
+      - name: Image setup (base image, user, uvicorn start)
+        run: python template/tests/check_image.py "$INSTANCE"
+
+      - name: Test the rendered instance
+        working-directory: ${{ env.INSTANCE }}
+        run: |
+          pip install -e "$GITHUB_WORKSPACE/ts-core[dev]"
+          pip install -e . --no-deps
+          pytest -q
+
+      - name: Compose files
+        working-directory: ${{ env.INSTANCE }}
+        run: |
+          docker compose -f docker-compose-production.yml config --quiet
+          docker compose -f docker-compose-development.yml config --quiet
+
+      - name: Documentation (docs/en, docs/de) matches and builds
+        run: |
+          pip install -r template/tests/docs/requirements.txt
+          python template/tests/check_docs.py "$INSTANCE" --prefix ifdd-ts-api- --external ifdd-ts-core-
+
+  hooks:
+    name: The pre-generation hook rejects bad values
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - run: pip install cookiecutter
+
+      - run: |
+          for bad in "ifdd_ts_api_path=/tsapi/" "ifdd_ts_api_path=tsapi" \
+                     "ifdd_ts_api_url=https://ts.example.org/other" \
+                     "ifdd_ts_api_role_read=ts.read" "ifdd_ts_api_role_write=ifdd_ts_ro" \
+                     "ifdd_ts_ingest_network=proxy-net" "ifdd_context_root=ifdd" \
+                     "ifdd_oidc_realm=http://id/realms/x" "ifdd_ts_api_prj_name=it's"; do
+            if cookiecutter --no-input -f -o bad . "$bad"; then echo "accepted: $bad"; exit 1; fi
+          done
