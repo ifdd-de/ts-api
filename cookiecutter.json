@@ -1,8 +1,8 @@
 {
     "ifdd_ts_api_prj_name": "IFDD TS API",
     "ifdd_ts_api_prj_slug": "{{ cookiecutter.ifdd_ts_api_prj_name | lower | replace(' ', '-') }}",
-    "ifdd_ts_api_version": "26.10.2",
-    "ifdd_ts_core_version": "26.10.2",
+    "ifdd_ts_api_version": "26.10.3",
+    "ifdd_ts_core_version": "26.10.3",
     "ifdd_ts_api_path": "/tsapi",
     "ifdd_ts_api_url": "https://ts.example.org/tsapi",
     "ifdd_ts_api_port": "8093",
