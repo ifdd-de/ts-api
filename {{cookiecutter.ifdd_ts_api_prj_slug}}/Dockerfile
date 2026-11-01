@@ -1,5 +1,5 @@
 # Image of the time series API: python:3.14-slim with ifdd-ts-core.
-FROM python:3.14-slim
+FROM python:3.15-slim
 
 ENV PIP_ROOT_USER_ACTION=ignore \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
