@@ -24,7 +24,7 @@ repository.
 | Variable | Default | Meaning |
 |---|---|---|
 | `ifdd_ts_api_prj_name`, `ifdd_ts_api_prj_slug` | `IFDD TS API`, derived | name and directory |
-| `ifdd_ts_api_version`, `ifdd_ts_core_version` | `26.10.2` | instance version, required ts-core |
+| `ifdd_ts_api_version`, `ifdd_ts_core_version` | `26.11.1` | instance version, required ts-core |
 | `ifdd_ts_api_path` | `/tsapi` | path prefix on the host of Grafana |
 | `ifdd_ts_api_url` | `https://ts.example.org/tsapi` | public URL; must be `https://` + `ifdd_ts_host` + `ifdd_ts_api_path` (checked) |
 | `ifdd_ts_api_port`, `ifdd_ts_api_max_workers`, `ifdd_ts_api_log_level` | `8093`, `2`, `info` | uvicorn |
@@ -41,10 +41,17 @@ The pre-generation hook rejects values that would render but not work.
 
 ```bash
 cookiecutter --no-input --config-file tests/fixtures/custom.yaml -o /tmp/out .
-cd /tmp/out/grid-ts-api && pip install -e '.[dev]' && pytest
+(cd /tmp/out/grid-ts-api && pip install -e '.[dev]' && pytest)
 python tests/check_image.py /tmp/out/grid-ts-api
+pip install -r tests/docs/requirements.txt
+export IFDD_PLANTUML_JAR="$(tests/docs/get_plantuml.sh)"
 python tests/check_docs.py /tmp/out/grid-ts-api --prefix ifdd-ts-api- --external ifdd-ts-core-
 ```
+
+The documentation check runs PlantUML, so it needs Java and Graphviz;
+`tests/docs/get_plantuml.sh` downloads the pinned PlantUML jar into the user
+cache, checks its SHA-256 and prints its path. The Sphinx project of the full
+documentation needs `myst_parser` and `sphinxcontrib.plantuml`.
 
 The CI (`.github/workflows/template-test.yml`) does this for both fixtures,
 and `template-update-test.yml` checks `cruft update` from the last tag.

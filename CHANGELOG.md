@@ -2,6 +2,16 @@
 
 The version scheme follows the other IFDD repositories: `YY.MM.N`.
 
+## [26.11.1] - 2026-11-14
+
+- Documentation: the architecture diagram in `docs/en` and `docs/de` is
+  PlantUML instead of Mermaid, so it also renders in PDF builds. The Sphinx
+  project of the full documentation needs `sphinxcontrib-plantuml`, Java and
+  Graphviz instead of `sphinxcontrib-mermaid`. `tests/docs/get_plantuml.sh`
+  downloads the pinned PlantUML jar (1.2026.10) for `tests/check_docs.py`; the
+  template CI installs Java and Graphviz.
+- `ifdd_ts_api_version` and `ifdd_ts_core_version` 26.11.1.
+
 ## [26.10.3] - 2026-10-30
 
 - `ifdd_ts_api_version` and `ifdd_ts_core_version` 26.10.3: ifdd-ts-core
