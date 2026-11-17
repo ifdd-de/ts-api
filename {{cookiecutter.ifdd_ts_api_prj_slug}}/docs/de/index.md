@@ -25,16 +25,25 @@ Die API hat weder ein eigenes Secret noch eine eigene Datenbank.
 
 ## Architektur
 
-```{mermaid}
-flowchart LR
-  S[Dienste, Client Credentials] -->|HTTPS| P[proxy: Traefik]
-  P -->|"{{ cookiecutter.ifdd_ts_host }}{{ cookiecutter.ifdd_ts_api_path }}"| API[ts-api: uvicorn]
-  P -->|"{{ cookiecutter.ifdd_ts_host }}, andere Pfade"| G[Grafana]
-  API -->|"{{ cookiecutter.ifdd_ts_ingest_network }}"| VM[(VictoriaMetrics)]
+```{uml}
+@startuml
+left to right direction
+  rectangle "Dienste, Client Credentials" as S
+  rectangle "proxy: Traefik" as P
+  S --> P : HTTPS
+  rectangle "ts-api: uvicorn" as API
+  P --> API : {{ cookiecutter.ifdd_ts_host }}{{ cookiecutter.ifdd_ts_api_path }}
+  rectangle "Grafana" as G
+  P --> G : {{ cookiecutter.ifdd_ts_host }}, andere Pfade
+  database "VictoriaMetrics" as VM
+  API --> VM : {{ cookiecutter.ifdd_ts_ingest_network }}
   G --> VM
-  API -->|JWKS, Vokabulare| P
-  P --> KC[Keycloak]
-  P --> T[type]
+  API --> P : JWKS, Vokabulare
+  rectangle "Keycloak" as KC
+  P --> KC
+  rectangle "type" as T
+  P --> T
+@enduml
 ```
 
 Die API teilt sich den Host mit Grafana: Der Proxy schickt den Pfad

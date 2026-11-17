@@ -25,16 +25,25 @@ instance adds packaging, the image, the compose files and the configuration
 
 ## Architecture
 
-```{mermaid}
-flowchart LR
-  S[services, client credentials] -->|HTTPS| P[proxy: Traefik]
-  P -->|"{{ cookiecutter.ifdd_ts_host }}{{ cookiecutter.ifdd_ts_api_path }}"| API[ts-api: uvicorn]
-  P -->|"{{ cookiecutter.ifdd_ts_host }}, other paths"| G[Grafana]
-  API -->|"{{ cookiecutter.ifdd_ts_ingest_network }}"| VM[(VictoriaMetrics)]
+```{uml}
+@startuml
+left to right direction
+  rectangle "services, client credentials" as S
+  rectangle "proxy: Traefik" as P
+  S --> P : HTTPS
+  rectangle "ts-api: uvicorn" as API
+  P --> API : {{ cookiecutter.ifdd_ts_host }}{{ cookiecutter.ifdd_ts_api_path }}
+  rectangle "Grafana" as G
+  P --> G : {{ cookiecutter.ifdd_ts_host }}, other paths
+  database "VictoriaMetrics" as VM
+  API --> VM : {{ cookiecutter.ifdd_ts_ingest_network }}
   G --> VM
-  API -->|JWKS, vocabularies| P
-  P --> KC[Keycloak]
-  P --> T[type]
+  API --> P : JWKS, vocabularies
+  rectangle "Keycloak" as KC
+  P --> KC
+  rectangle "type" as T
+  P --> T
+@enduml
 ```
 
 The API shares the host of Grafana: the proxy sends the path
