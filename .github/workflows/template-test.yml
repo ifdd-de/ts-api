@@ -34,8 +34,8 @@ jobs:
       - name: Install tooling
         run: pip install cruft cookiecutter pyyaml
 
-      # ts-core is not on PyPI yet, so it is installed from its repository.
-      # Pin this to a release once the package is published.
+      # ts-core is installed from its main branch, so the template is tested
+      # against the current runtime, which may be ahead of the PyPI release.
       - name: Check out ts-core
         uses: actions/checkout@v7
         with:

@@ -8,7 +8,7 @@ configuration (`.env`).
 ## Quick start
 
 ```bash
-cp <ts-core>/dist/ifdd_ts_core-*.whl wheels/   # while ifdd-ts-core is not on PyPI
+cp <ts-core>/dist/ifdd_ts_core-*.whl wheels/   # optional: an unreleased build of ts-core
 cp <proxy instance>/certs/ca.crt certs/         # trust the proxy's certificate
 docker compose -f docker-compose-production.yml up -d --build
 curl --cacert certs/ca.crt {{ cookiecutter.ifdd_ts_api_url }}/version

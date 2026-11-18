@@ -38,7 +38,7 @@ in `.env` setzen.
 | `.env` | Konfiguration | übersprungen |
 | `certs/` | CAs für das Image | übersprungen |
 | `app/settings.py` | eigene Einstellungen | übersprungen |
-| `wheels/` | ts-core-Wheel, solange nicht auf PyPI | – |
+| `wheels/` | optionales ts-core-Wheel eines unveröffentlichten Builds | – |
 | `docs/` | diese Doku | aktualisiert |
 
 ## Container

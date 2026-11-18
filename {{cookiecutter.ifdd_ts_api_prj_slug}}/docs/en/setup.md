@@ -11,7 +11,7 @@
 | the proxy lists `{{ cookiecutter.ifdd_ts_host }}`, the Keycloak host and the type host in `ifdd_proxy_internal_hosts` | inside the container these names must lead to Traefik |
 | a Keycloak realm `{{ cookiecutter.ifdd_oidc_realm }}` with the client `{{ cookiecutter.ifdd_ts_api_oidc_client_id }}` and its roles | the roles and store patterns of the callers |
 | a type instance below `{{ cookiecutter.ifdd_type_url }}` | the vocabularies every sample is checked against |
-| the ts-core wheel in `wheels/` while `ifdd-ts-core` is not on PyPI | the image installs it from there |
+| `ifdd-ts-core` on PyPI, or the wheel of an unreleased build in `wheels/` | the image installs the runtime, a wheel in `wheels/` first |
 | the CA certificate of the proxy in `certs/` | the image must trust the proxy's certificate |
 
 ## Create the instance
@@ -24,12 +24,13 @@ hand:
 ```bash
 cruft create --no-input --config-file .cookiecutter_all.yaml \
   --skip .env --skip certs https://github.com/ifdd-de/ts-api
-cp <ts-core>/dist/ifdd_ts_core-*.whl {{ cookiecutter.ifdd_ts_api_prj_slug }}/wheels/
+# only for an unreleased build of ts-core:
+# cp <ts-core>/dist/ifdd_ts_core-*.whl {{ cookiecutter.ifdd_ts_api_prj_slug }}/wheels/
 cp proxy/certs/ca.crt {{ cookiecutter.ifdd_ts_api_prj_slug }}/certs/
 ```
 
-Build the wheel from the current source of ts-core and remove older wheels
-of the same version first: pip takes any wheel with a matching version.
+For an unreleased build, build the wheel from the current source of ts-core
+and remove older wheels of the same version first: pip takes any wheel with a matching version.
 
 ## Configuration
 

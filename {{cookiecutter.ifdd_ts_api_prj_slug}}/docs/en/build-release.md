@@ -25,8 +25,8 @@ the image with the new wheel.
 ## Release
 
 `.github/workflows/release.yml` builds the image and pushes it to ghcr.io
-when a tag `v*` is pushed. Until `ifdd-ts-core` is on PyPI, that build only
-works with the wheel in `wheels/`.
+when a tag `v*` is pushed. It installs `ifdd-ts-core` from PyPI unless
+`wheels/` holds a wheel.
 
 ```{note}
 Not tested: the image build and the release workflow (no container registry
