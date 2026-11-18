@@ -38,7 +38,7 @@ when needed.
 | `.env` | configuration | skipped |
 | `certs/` | CAs for the image | skipped |
 | `app/settings.py` | own settings | skipped |
-| `wheels/` | ts-core wheel while not on PyPI | – |
+| `wheels/` | optional ts-core wheel of an unreleased build | – |
 | `docs/` | this documentation | updated |
 
 ## Container

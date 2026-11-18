@@ -25,8 +25,8 @@ Neubau des Images mit dem neuen Wheel.
 ## Freigabe
 
 `.github/workflows/release.yml` baut das Image beim Push eines Tags `v*` und
-schiebt es nach ghcr.io. Solange `ifdd-ts-core` nicht auf PyPI ist, gelingt
-dieser Bau nur mit dem Wheel in `wheels/`.
+schiebt es nach ghcr.io. Er installiert `ifdd-ts-core` von PyPI, außer
+`wheels/` enthält ein Wheel.
 
 ```{note}
 Nicht getestet: der Image-Bau und der Release-Workflow (beim Schreiben des

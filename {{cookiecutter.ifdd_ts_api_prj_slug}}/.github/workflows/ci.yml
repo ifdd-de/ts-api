@@ -24,7 +24,7 @@ jobs:
           python-version: "3.13"
           cache: pip
 
-      # wheels/ holds ifdd-ts-core while it is not on PyPI.
+      # wheels/ may hold an unreleased build of ifdd-ts-core; pip prefers it.
       - name: Install
         run: pip install --find-links wheels -e ".[dev]"
 

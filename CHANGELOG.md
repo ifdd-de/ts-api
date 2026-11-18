@@ -2,6 +2,14 @@
 
 The version scheme follows the other IFDD repositories: `YY.MM.N`.
 
+## [26.11.2] - 2026-11-18
+
+- Instance version 26.11.2; the instance still requires `ifdd-ts-core`
+  26.11.1 (`ifdd_ts_core_version`), which has no changes.
+- Documentation: `ifdd-ts-core` is on PyPI; `wheels/` is needed only for an
+  unreleased build. The template CI comment says why it still installs
+  ts-core from its `main` branch.
+
 ## [26.11.1] - 2026-11-14
 
 - Documentation: the architecture diagram in `docs/en` and `docs/de` is
