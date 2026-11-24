@@ -24,7 +24,7 @@ repository.
 | Variable | Default | Meaning |
 |---|---|---|
 | `ifdd_ts_api_prj_name`, `ifdd_ts_api_prj_slug` | `IFDD TS API`, derived | name and directory |
-| `ifdd_ts_api_version`, `ifdd_ts_core_version` | `26.11.2`, `26.11.1` | instance version, required ts-core |
+| `ifdd_ts_api_version`, `ifdd_ts_core_version` | `26.11.11`, `26.11.11` | instance version, required ts-core |
 | `ifdd_ts_api_path` | `/tsapi` | path prefix on the host of Grafana |
 | `ifdd_ts_api_url` | `https://ts.example.org/tsapi` | public URL; must be `https://` + `ifdd_ts_host` + `ifdd_ts_api_path` (checked) |
 | `ifdd_ts_api_port`, `ifdd_ts_api_max_workers`, `ifdd_ts_api_log_level` | `8093`, `2`, `info` | uvicorn |

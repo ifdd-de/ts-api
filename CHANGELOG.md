@@ -2,8 +2,10 @@
 
 The version scheme follows the other IFDD repositories: `YY.MM.N`.
 
-## [Unreleased]
+## [26.11.11] - 2026-11-24
 
+- Version aligned across all ifdd-de repositories: `ifdd_ts_api_version` and
+  `ifdd_ts_core_version` 26.11.11 (ifdd-ts-core 26.11.11 has no code changes).
 - CI: GitHub Actions pinned to commit SHAs (version as comment),
   `persist-credentials: false` on every checkout; the same in the workflows of
   the instance.
